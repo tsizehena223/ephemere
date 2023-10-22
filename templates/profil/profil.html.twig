@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        #closePopup {
+            position: fixed;
+            top: 7%;
+            right: 5%;
+            color: red; 
+            font-size: 20px;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        #popup {
+            margin: 10px;
+            background-color: black;
+        }
+
+        .form1 {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+
+        .label1 {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .input1 {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .button1 {
+            background-color: violet;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .button1:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Your content goes here -->
+
+    <p id="showPopup">Profil</p>
+
+    <!-- The popup container -->
+    <div id="popup" class="popup" style="color: black; width: 40vw; height: 70vh">
+        {% if app.user %}
+            <form action="{{ path('app_profil') }}" method="post" class="form1" enctype="multipart/form-data">
+                <label for="name" class="label1" >Nom :</label>
+                <input type="text" class="input1" id="name" name="name" required value="{{ app.user.name }}">
+
+                <label for="email" class="label1" >E-mail :</label>
+                <input type="email" class="input1" id="email" name="email" required value="{{ app.user.email }}">
+
+                <label for="cin" class="label1" >CIN :</label>
+                <input type="text" class="input1" id="cin" name="cin" required value="{{ app.user.cin }}" readonly>
+
+                <label for="pdp" class="label1" >Photo :</label>
+                <input type="file" id="pdp" class="input1" name="pdpFile" size="3145728">
+
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        {% endif %}
+        <button id="closePopup">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get references to the button and popup
+            var showPopupButton = document.getElementById('showPopup');
+            var popup = document.getElementById('popup');
+            var closePopupButton = document.getElementById('closePopup');
+
+            // Show the popup when the button is clicked
+            showPopupButton.addEventListener('click', function () {
+                popup.style.display = 'block';
+            }); 
+
+            // Hide the popup when the close button is clicked
+            closePopupButton.addEventListener('click', function () {
+                popup.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

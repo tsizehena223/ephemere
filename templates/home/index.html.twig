@@ -18,11 +18,13 @@
                 <i class="fa fa-1.2x fa-search"></i>
                 <input type="search" placeholder="Search">
             </div>
-            <div class="create">
-                <label class="btn btn-primary" for="create-post">Profil</label>
+            <div class="create" id="profil">
+                <label class="btn btn-primary" for="create-post">{% include 'profil/profil.html.twig' %}</label>
             </div>
+            
             <div class="profile-photo">
-                <img src="{{ asset('assets/accueil/images/defaultUser.png') }}" alt="">
+                {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                <img src="{{ imageSource }}" alt="">
             </div>
         </div>
         <div class="menu-item-2">
@@ -41,7 +43,8 @@
             <div class="left">
                  <a class="profile">
                      <div class="profile-photo">
-                        <img src="{{ asset('assets/accueil/images/defaultUser.png') }}" alt="">
+                        {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                        <img src="{{ imageSource }}" alt="">
                      </div>
                      <div class="haddle">
                      {% if app.user %}
@@ -97,7 +100,8 @@
             <div class="middle">
                 <form class="create-post">
                     <div class="profile-photo">
-                        <img src="{{ asset('assets/accueil/images/defaultUser.png') }}" alt="">
+                        {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                        <img src="{{ imageSource }}" alt="">
                     </div>
                     <input type="text" name="" id="create-post" placeholder="What is on your mind?">
                     <input type="submit" name="" id="" value="Post" class="btn btn-primary">
@@ -195,7 +199,8 @@
                         {% for u in users %}
                             <div class="message">
                                 <div class="profile-photo">
-                                    <img src="{{ asset('assets/accueil/images/defaultUser.png') }}" alt="">
+                                    {% set imageSource = (u.pdpName) ? asset('images/users/' ~ u.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                                    <img src="{{ imageSource }}" alt="">
                                 </div>
                                 <div class="message-body">
                                     <h5>{{ u.name }}</h5>
@@ -214,7 +219,8 @@
                             <div class="request">
                                 <div class="info">
                                     <div class="profil-photo">
-                                        <img src="{{ asset('assets/accueil/images/defaultUser.png') }}" alt="">
+                                        {% set imageSource = (u.pdpName) ? asset('images/users/' ~ u.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                                        <img src="{{ imageSource }}" alt="">
                                     </div>
                                     <div>
                                         <h5>{{ u.name }}</h5>

@@ -15,6 +15,10 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegisterController extends AbstractController
 {
+    public function __construct(private UserPasswordHasherInterface $hash)
+    {
+    }
+
     #[Route('/api/register', name: 'app_register')]
     public function index(Request $request, EntityManagerInterface $em, UserAuthenticatorInterface $userAuthenticatorInterface, UserAuthenticator $userAuthenticator, UserRepository $userRepository, UserPasswordHasherInterface $hash): Response
     {
@@ -55,5 +59,28 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute("app_add_information");
         }
         return $this->render("security/login.html.twig");
+    }
+
+    #[Route('/profil', name: 'app_profil', methods: ["POST"])]
+    public function profil(Request $request, EntityManagerInterface $em): Response
+    {
+        if ($request->isMethod("POST")) {
+            $user = $this->getUser();
+
+            if ($user instanceof User) {
+                $user->setName($request->request->get('name'));
+                $user->setEmail($request->request->get('email'));
+
+                $pdpFile = $request->files->get('pdpFile');
+
+                $user->setImageFile($pdpFile);
+
+                $em->persist($user);
+                $em->flush();
+            }
+
+            return $this->redirectToRoute("app_home");
+        }
+        return $this->render("profil/profil.html.twig");
     }
 }
