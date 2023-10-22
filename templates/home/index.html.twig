@@ -98,14 +98,14 @@
             {# <!----------END OF LEFT-------------> #}
              {# <!----middle----> #}
             <div class="middle">
-                <form class="create-post">
+                <div class="create-post">
                     <div class="profile-photo">
                         {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
                         <img src="{{ imageSource }}" alt="">
                     </div>
-                    <input type="text" name="" id="create-post" placeholder="What is on your mind?">
-                    <input type="submit" name="" id="" value="Post" class="btn btn-primary">
-                </form>
+                    <input type="text" name="" id="create-post" placeholder="What is on your mind?" readonly>
+                    <label class="btn btn-primary" for="create-post">{% include 'article/index.html.twig' %}</label>
+                </div>
                 {# <!------Feeds 1-------> #}
                 <div class="feeds">
                     <div class="feed">

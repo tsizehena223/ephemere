@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     public function index(Request $request, UserRepository $userRepository): Response
     {
         if ($request->isMethod("POST")) {
-            return null;
+            return $this->render('home/index.html.twig', ["users" => null]);
         }
 
         if ($this->getUser() != null) {
@@ -49,8 +49,6 @@ class HomeController extends AbstractController
             }
         }
 
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/index.html.twig');
     }
 }
