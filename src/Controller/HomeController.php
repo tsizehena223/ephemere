@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\ArticleRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +14,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
-    public function index(Request $request, UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository, NotificationRepository $notificationRepository): Response
     {
+        if ($this->isGranted("ROLE_ADMIN")) {
+            return $this->redirectToRoute("app_admin");
+        }
+
         if ($request->isMethod("POST")) {
             return $this->render('home/index.html.twig', ["users" => null]);
         }
@@ -35,7 +41,7 @@ class HomeController extends AbstractController
                         break;
 
                     case 'entreprise':
-                        $users = $userRepository->findByEntreprise($current->getId());
+                        $users = $userRepository->findByEntreprise($current);
                         break;
 
                     default:
@@ -43,8 +49,11 @@ class HomeController extends AbstractController
                         break;
                 }
 
+                $notifs = $notificationRepository->findNotifsByUser($current);
+
                 return $this->render('home/index.html.twig', [
-                    'users' => $users
+                    'users' => $users,
+                    'notifs' => $notifs
                 ]);
             }
         }

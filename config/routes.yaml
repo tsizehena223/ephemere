@@ -7,3 +7,6 @@ controllers:
 app_homepage:
     path: /
     controller: App\Controller\HomeController::index
+
+favicon:
+    path: /favicon.ico

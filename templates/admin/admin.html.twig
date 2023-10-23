@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ asset('assets/admin/bootstrap.min.css') }}">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Dashboard &nbsp; <span><a href="{{ path('app_logout') }}" class="btn btn-sm btn-danger">Log out</a></span></h2>
+	{% if app.session.flashBag.has('success') %}
+		<div class="alert alert-success">
+			{{ app.session.flashBag.get('success') | join('<br>') }}
+		</div>
+	{% endif %}
+	{% if app.session.flashBag.has('error') %}
+		<div class="alert alert-danger">
+			{{ app.session.flashBag.get('error') | join('<br>') }}
+		</div>
+	{% endif %}
+    <div class="list-group">
+		<center class="btn btn-info">Projet à valider</center>
+			<table class="table">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Author</th>
+						<th scope="col">Domaine</th>
+						<th scope="col">Situation</th>
+						<th scope="col">Date</th>
+						<th scope="col">Fichier du projet</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for project in projetsAValider %}
+						<tr>
+							<th class="table-danger">{{ project.author }}</th>
+							<td class="table-danger">{{ project.domaine | upper }}</td>
+							<td class="table-danger">{{ project.situationTravail }}</td>
+							<td class="table-danger">{{ project.updatedAt | date('Y-m-d H:i:s') }}</td>
+							<td class="table-danger"><a href="{{ "http://localhost:8000/images/articles/" ~ project.file }}">Download</a></td>
+							<td class="table-primary">
+								<a href="{{ path('app_admin.approuv', {'id': project.id}) }}" class="btn btn-sm btn-info">Approuver</a>
+								<a href="{{ path('app_admin.remove', {'id': project.id}) }}" class="btn btn-sm btn-warning">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>		
+    </div>
+&nbsp;
+	<div class="list-group">
+		<center class="btn btn-success">Projet validé</center>
+			<table class="table">
+				<thead>
+					<tr class="table-primary">
+						<th scope="col">Author</th>
+						<th scope="col">Domaine</th>
+						<th scope="col">Situation</th>
+						<th scope="col">Date</th>
+						<th scope="col">Fichier du projet</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for project in projectsValides %}
+						<tr>
+							<th class="table-secondary">{{ project.author }}</th>
+							<td class="table-secondary">{{ project.domaine | upper }}</td>
+							<td class="table-secondary">{{ project.situationTravail }}</td>
+							<td class="table-secondary">{{ project.updatedAt | date('Y-m-d H:i:s') }}</td>
+							<td class="table-secondary"><a href="{{ "http://localhost:8000/images/articles/" ~ project.file }}">Download</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>		
+    </div>
+</div>
+
+</body>
+</html>

@@ -42,6 +42,9 @@ class Article
     #[Vich\UploadableField(mapping: 'articles', fileNameProperty: 'fileName', size: 'fileSize')]
     private ?File $projectFile = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,5 +146,17 @@ class Article
         if (null !== $projectFile) {
             $this->updatedAt = new \DateTime();
         }
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

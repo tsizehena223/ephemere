@@ -57,9 +57,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'pdpName', size: 'pdpSize')]
     private ?File $imageFile = null;
 
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Notification::class, orphanRemoval: true)]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,5 +250,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getImageFile()
     {
         return $this->imageFile;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getRecipient() === $this) {
+                $notification->setRecipient(null);
+            }
+        }
+
+        return $this;
     }
 }

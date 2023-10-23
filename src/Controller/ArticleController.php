@@ -25,7 +25,7 @@ class ArticleController extends AbstractController
             }
             $situationTravail = $request->request->get('travail');
             $domaineActivite = $request->request->get('activite');
-
+            $title = $request->request->get('title');
             $projectFile = $request->files->get('projectFile');
 
             $article = new Article();
@@ -33,6 +33,8 @@ class ArticleController extends AbstractController
             $article->setSituationTravail($situationTravail);
             $article->setAuthor($author);
             $article->setVerifiedAdmin(0);
+            $article->setTitle($title);
+
 
             $article->setProjectFile($projectFile);
 
