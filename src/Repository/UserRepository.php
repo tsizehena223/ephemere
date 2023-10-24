@@ -75,4 +75,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+
+    public function findByNameAndProfEtud($currentId, $name): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere($this->createQueryBuilder("u")->expr()->like("u.name", "'%$name%'"))
+            ->andWhere('u.id != :id')
+            ->andWhere('u.profil = :p1 OR u.profil = :p2')
+            ->setParameters(['id' => $currentId, 'p1' => 'etudiant', 'p2' => 'professeur'])
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByNameAndEntreprise($currentId, $name): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere($this->createQueryBuilder("u")->expr()->like("u.name", "'%$name%'"))
+            ->andWhere('u.id != :id')
+            ->setParameter('id', $currentId)
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByNameAndInvestisseur($currentId, $name): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere($this->createQueryBuilder("u")->expr()->like("u.name", "'%$name%'"))
+            ->andWhere('u.id != :id')
+            ->andWhere('u.profil = :p1')
+            ->setParameters(['id' => $currentId, 'p1' => 'entreprise'])
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
