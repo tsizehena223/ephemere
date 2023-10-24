@@ -11,9 +11,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             z-index: 1000;
+            border-radius: 10px;
         }
 
         #closePopup {
@@ -24,6 +26,7 @@
             font-size: 20px;
             border-radius: 20px;
             padding: 10px;
+            cursor: pointer;
         }
 
         #popup {
@@ -52,6 +55,12 @@
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .input1:focus {
+            outline: none;
+            border-color: violet;
         }
 
         .button1 {
@@ -62,6 +71,7 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            font-size: 16px;
         }
 
         .button1:hover {
@@ -71,12 +81,9 @@
 </head>
 <body>
 
-    <!-- Your content goes here -->
-
     <p id="showPopup">Profil</p>
 
-    <!-- The popup container -->
-    <div id="popup" class="popup" style="color: black; width: 40vw; height: 70vh">
+    <div id="popup" class="popup">
         {% if app.user %}
             <form action="{{ path('app_profil') }}" method="post" class="form1" enctype="multipart/form-data">
                 <label for="name" class="label1" >Nom :</label>
@@ -91,7 +98,7 @@
                 <label for="pdp" class="label1" >Photo :</label>
                 <input type="file" id="pdp" class="input1" name="pdpFile" size="3145728">
 
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="button1">Update</button>
             </form>
         {% endif %}
         <button id="closePopup">Close</button>
@@ -99,17 +106,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get references to the button and popup
             var showPopupButton = document.getElementById('showPopup');
             var popup = document.getElementById('popup');
             var closePopupButton = document.getElementById('closePopup');
 
-            // Show the popup when the button is clicked
             showPopupButton.addEventListener('click', function () {
                 popup.style.display = 'block';
-            }); 
+            });
 
-            // Hide the popup when the close button is clicked
             closePopupButton.addEventListener('click', function () {
                 popup.style.display = 'none';
             });

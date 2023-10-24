@@ -4,39 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
-        .popup {
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #showPopup2 {
+            color: white;
+            cursor: pointer;
+        }
+
+        #popup2 {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
             z-index: 1000;
-        }
-
-        #closePopup2 {
-            position: fixed;
-            top: 7%;
-            right: 5%;
-            color: red; 
-            font-size: 20px;
-            border-radius: 20px;
-            padding: 10px;
-        }
-
-        #popup2 {
-            margin: 10px;
-            background-color: black;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         .form1 {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            width: 300px;
         }
 
         .label1 {
@@ -46,59 +42,78 @@
         }
 
         .input1 {
-            width: 100%;
+            width: calc(100% - 16px);
             padding: 8px;
             margin-bottom: 16px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .input1:focus {
+            outline: none;
+            border-color: #3498db;
         }
 
         .button1 {
+            background-color: #3498db;
             color: #fff;
             padding: 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            font-size: 16px;
         }
 
         .button1:hover {
-            background-color: #45a049;
+            background-color: #2980b9;
+        }
+
+        #closePopup2 {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #closePopup2:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
 <body>
 
-    <!-- Your content goes here -->
-
     <p id="showPopup2">Post</p>
 
-    <!-- The popup container -->
-    <div id="popup2" class="popup" style="color: black; width: 40vw; height: 80vh">
+    <div id="popup2" class="popup">
         {% if app.user %}
             <form action="{{ path('article.create') }}" method="POST" class="form1" enctype="multipart/form-data">
-                <label for="name" class="label1" >Nom :</label>
+                <label for="name" class="label1">Nom :</label>
                 <input type="text" class="input1" id="name" name="name" required value="{{ app.user.name }}" readonly>
 
-                <label for="title" class="label1" >Titre :</label>
-                <input type="text" class="input1" id="title" name="title" required>
+                <label for="title" class="label1">Titre :</label>
+                <input type="text" class="input1" id="title" name="title" required placeholder="Titre du projet">
 
-                <label for="travail" class="label1" >Situation de travail :</label>
-                <input type="text" class="input1" id="travail" name="travail" required>
+                <label for="travail" class="label1">Situation de travail :</label>
+                <input type="text" class="input1" id="travail" name="travail" required placeholder="Situation du projet">
 
-                <label for="activite" class="label1" >Domaine d'activité :</label>
+                <label for="activite" class="label1">Domaine d'activité :</label>
                 <select class="input1" id="activite" name="activite" required>
                     <option value="aea">AEA (Agriculture, Elevage, Agro)</option>
                     <option value="tec">TEC (Tech, Education, Construction)</option>
-                    <option value="htra"> HTRA (Hôtellerie, Tourisme, Restauration, Agence de voyage)</option>
+                    <option value="htra">HTRA (Hôtellerie, Tourisme, Restauration, Agence de voyage)</option>
                     <option value="finance">Finance</option>
                 </select>
 
-                <label for="projectFile" class="label1" >Project file :</label>
+                <label for="projectFile" class="label1">Project file :</label>
                 <input type="file" id="projectFile" class="input1" name="projectFile" required>
 
-                <button type="submit" class="btn btn-primary">Post</button>
+                <button type="submit" class="button1">Post</button>
             </form>
         {% endif %}
         <button id="closePopup2">Close</button>
@@ -106,17 +121,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get references to the button and popup
             var showPopupButton = document.getElementById('showPopup2');
             var popup = document.getElementById('popup2');
             var closePopupButton = document.getElementById('closePopup2');
 
-            // Show the popup when the button is clicked
             showPopupButton.addEventListener('click', function () {
                 popup.style.display = 'block';
-            }); 
+            });
 
-            // Hide the popup when the close button is clicked
             closePopupButton.addEventListener('click', function () {
                 popup.style.display = 'none';
             });
