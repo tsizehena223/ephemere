@@ -1,0 +1,171 @@
+{% if is_granted('ROLE_ADMIN') %}
+{{ include("admin/admin.html.twig") }}
+{% else %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-CREA Tech</title>
+    <link rel="stylesheet" href="{{ asset('assets/accueil/css/style_index.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/accueil/css/message.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/accueil/css/fontawesome.min.css') }}">
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <h2 class="logo">In-<span class="Spn">CEO</span><span> Tech</span></h2>
+            <h2 class="logo-2">I-<span class="Spn">C</span><span>T</span></h2>
+            <i class="fa fa-1x fa-search search-2"></i>
+            <form action="{{ path('app_users.search') }}" method="post">
+                <div class="search-bar">
+                    <i class="fa fa-1.2x fa-search"></i>
+                    <input type="search" placeholder="Search" name="name" required>
+                    <input type="submit" value="Search">
+                </div>
+            </form>
+            <div class="create" id="profil">
+                <label class="btn btn-primary" for="create-post">{% include 'profil/profil.html.twig' %}</label>
+            </div>
+
+            <div class="profile-photo">
+                {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName) :
+                asset('assets/accueil/images/defaultUser.png') %}
+                <img src="{{ imageSource }}" alt="">
+            </div>
+        </div>
+        <div class="menu-item-2">
+            <ul>
+                <li><i class="fa-solid fa-1x fa-house"></i><a href="#"></a></li>
+                <li><i class="fa-solid fa-1x fa-bell"></i><a href="#"></a></li>
+                <li><i class="fa-brands fa-1x fa-facebook-messenger"><small class="notification-count">!</small></i><a
+                        href="#"></a></li>
+                <li><i class="fa-solid fa-1x fa-contact-book"></i><a href="#"></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!----left---->
+            <div class="left" style="margin-top: 3rem">
+                <a class="profile">
+                    <div class="profile-photo">
+                        {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName)
+                        : asset('assets/accueil/images/defaultUser.png') %}
+                        <img src="{{ imageSource }}" alt="">
+                    </div>
+                    <div class="haddle">
+                        {% if app.user %}
+                        <h4>{{ app.user.name }}</h4>
+                        <p class="text-muted">{{ app.user.email }}</p>
+                        {% else %}
+                        <h4>User</h4>
+                        <p class="text-muted">user@gmail.com</p>
+                        {% endif %}
+                    </div>
+                </a>
+                {# Side bar #}
+                <div class="sidebar">
+                    <a class="menu-item active" href="{{ path('app_home') }}">
+                        <span><i class="fa-solid fa-1x fa-house"></i></span>
+                        <h3>Home</h3>
+                    </a>
+                    <a class="menu-item" id="message-notification">
+                        <span><i class="fa-brands fa-1x fa-facebook-messenger"><small class="notification-count"> !
+                                </small></i></span>
+                        <h3>Message</h3>
+                    </a>
+                    <a class="menu-item">
+                        <span><i class="fa-solid fa-1x fa-contact-book"></i></span>
+                        <h3>Contact Us</h3>
+                    </a>
+                    <a class="menu-item" id="notifications">
+                        <span><i class="fa-solid fa-1x fa-bell"><small class="notification-count">
+                                    {% if notifs is defined %}
+                                    {{ notifs | length}}
+                                    {% endif %}
+                                </small></i></span>
+                        <h3>Notification</h3>
+                        {# <!--------Notification pop up---------> #}
+                        <div class="notifications-popup">
+                            {% if notifs is defined %}
+                            {% for notif in notifs %}
+                            <div>
+                                <div class="profile-photo">
+                                    <img src="{{ asset('assets/accueil/images/logo.png') }}" alt="">
+                                </div>
+                                <div class="notification-body">
+                                    <b>Administrator</b> {{ notif.content }} <small><b>Titre du projet : {{
+                                            notif.articleTitle }}</b></small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        {# <!----End pop-up notification----> #}
+                    </a>
+                    <a class="menu-item">
+                        <span><i class="icon1 fa-solid fa-1x fa-palette"></i></span>
+                        <h3>Theme</h3>
+                    </a>
+                </div>
+                {# <!----End of side bar----> #}
+                {% if app.user %}
+                <label for="create-post" class="btn btn-primary"><a href="{{ path('app_logout') }}"
+                        style="color: white">Log Out</a></label>
+                {% else %}
+                <label for="create-post" class="btn btn-primary"><a href="{{ path('app_login') }}"
+                        style="color: white">Log In</a></label>
+                {% endif %}
+
+            </div>
+            {# <!----------END OF LEFT-------------> #}
+            {# <!----middle----> #}
+            <div class="middle">
+                <div class="create-post">
+                    <div class="profile-photo">
+                        {% set imageSource = (app.user and app.user.pdpName) ? asset('images/users/' ~ app.user.pdpName)
+                        : asset('assets/accueil/images/defaultUser.png') %}
+                        <img src="{{ imageSource }}" alt="">
+                    </div>
+                    <input type="text" name="" id="create-post" placeholder="What is on your mind?" readonly>
+                    <label class="btn btn-primary" for="create-post">{% include 'article/index.html.twig' %}</label>
+                </div>
+                {# <!------Feeds 1-------> #}
+                <div id="messages">
+                    {% if recipient.name is defined %}
+                        <div id="recipient">Message to {{ recipient.name }}</div>
+                        {% for message in messages %}
+                            {% if message.sender == app.user.id %}
+                                <div id="messageSent">
+                                    {{ message.content }}
+                                </div>
+                            {% else %}
+                                <div id="messageRecu">
+                                    {{ message.content }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <center><div class="message-container">
+                            <form id="message-form" method="POST" action="{{ path('app_message.send', {"id": recipient.id})
+                                }}">
+                                <input type="text" id="inputMessage" name="message" placeholder="Type your message here..." required />
+                                <button type="submit" id="buttonSend">Send</button>
+                            </form>
+                        </div></center>
+                    {% else %}
+                        <img src="{{ asset('assets/accueil/images/notfound.svg') }}" height="350">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+{% endif %}

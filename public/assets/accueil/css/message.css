@@ -1,0 +1,57 @@
+#messages {
+    margin: 2rem;
+    padding: 1rem;
+    width: 50vw;
+    height: 60vh;
+    background-color: white;
+    border-radius: 20px;
+}
+
+#recipient {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    background-color: #f0eef6;
+    border-radius: 20px;
+    color: grey;
+}
+
+.message-container {
+    position: fixed;
+    top: 35vw;
+    width: 47.5vw;
+    left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: col;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#buttonSend {
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+#messageSent {
+    margin-top: 0.9rem;
+    padding: 0.9rem;
+    border-radius: 20px;
+    display: flex;
+    width: auto;
+    background-color: rgb(49, 163, 184);
+}
+
+#messageRecu {
+    margin-top: 0.9rem;
+    padding: 0.9rem;
+    border-radius: 20px;
+    display: flex;
+    color: white;
+    width: auto;
+    background-color: rgb(167, 21, 159);
+}
