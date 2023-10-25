@@ -116,10 +116,12 @@
                     </div>
                     <input type="text" name="" id="create-post" placeholder="What is on your mind?" readonly>
                     <label class="btn btn-primary" for="create-post">
-                        {% if app.user.profil == 'admin' or app.user.profil == 'entreprise' %}
-                            {% include 'publication/index.html.twig' %}
-                        {% else %}
-                            {% include 'article/index.html.twig' %}
+                        {% if app.user %}
+                            {% if app.user.profil == 'admin' or app.user.profil == 'entreprise' %}
+                                {% include 'publication/index.html.twig' %}
+                            {% else %}
+                                {% include 'article/index.html.twig' %}
+                            {% endif %}
                         {% endif %}
                     </label>
                 </div>

@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -96,7 +97,9 @@ class RegisterController extends AbstractController
 
                 $pdpFile = $request->files->get('pdpFile');
 
-                $user->setImageFile($pdpFile);
+                if ($pdpFile instanceof File) {
+                    $user->setImageFile($pdpFile);
+                }
 
                 $em->persist($user);
                 $em->flush();
