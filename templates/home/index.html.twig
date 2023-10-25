@@ -87,10 +87,10 @@
                                     <div>
                                         <div class="profile-photo">
                                             <img src="{{ asset('assets/accueil/images/logo.png') }}" alt="">
-                                        </div>        
+                                        </div>      
                                         <div class="notification-body">
                                             <b>Administrator</b> {{ notif.content }} <small><b>Titre du projet : {{ notif.articleTitle }}</b></small>
-                                        </div>  
+                                        </div>
                                     </div>
                                 {% endfor %}
                             {% endif %}
@@ -221,7 +221,7 @@
                         <input type="search" name="" id="message-search" placeholder="Search Message">
                     </div>
                      {# <!---Message------> #}
-                     <div class="message">
+                     <a class="message" href="{{ path("app_message.get", {"id": 1}) }}">
                         <div class="profile-photo">
                             <img src="{{ asset('assets/accueil/images/logo.png') }}" alt="">
                         </div>
@@ -229,11 +229,11 @@
                             <h5>Administrator</h5>
                             <p class="text-muted"><h6>Welcome to In-CREA Tech!...</h6></p>
                         </div>
-                    </div>
-                    
+                    </a>
+
                     {% if app.user and usersSearch is not defined %}
                         {% for u in users %}
-                            <div class="message">
+                            <a class="message" href="{{ path("app_message.get", {"id": u.id}) }}">
                                 <div class="profile-photo">
                                     {% set imageSource = (u.pdpName) ? asset('images/users/' ~ u.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
                                     <img src="{{ imageSource }}" alt="">
@@ -242,7 +242,7 @@
                                     <h5>{{ u.name }}</h5>
                                     <p class="text-muted"><h6>Say Hi to {{ u.name }}!</h6></p>
                                 </div>
-                            </div>
+                            </a>
                         {% endfor %}
                     {% endif %}
                 {# <!---End of message--> #}
@@ -266,9 +266,9 @@
                                     </div>
                                 </div>
                                 <div class="action">
-                                    <button class="btn btn-primary">
+                                    <a class="btn btn-primary" href="{{ path('app_message.get', {"id": u.id}) }}">
                                         Message
-                                    </button> 
+                                    </a> 
                                 </div>
                             </div>
                         {% endfor %}

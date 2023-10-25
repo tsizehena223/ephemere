@@ -58,7 +58,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->andWhere('u.id != :id')
             ->andWhere('u.profil = :p1')
-            ->setParameters(['id' => $currentId, 'p1' => 'entreprise'])
+            ->setParameters(['id' => $currentId, 'p1' => 'investisseur'])
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(5)
             ->getQuery()
@@ -69,7 +69,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.id != :id')
-            ->setParameter('id', $currentId)
+            ->andWhere('u.profil = :p1')
+            ->setParameters(['id' => $currentId, 'p1' => 'entreprise'])
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(5)
             ->getQuery()
@@ -93,7 +94,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->andWhere($this->createQueryBuilder("u")->expr()->like("u.name", "'%$name%'"))
             ->andWhere('u.id != :id')
-            ->setParameter('id', $currentId)
+            ->andWhere('u.profil = :p1')
+            ->setParameters(['id' => $currentId, 'p1' => 'entreprise'])
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult();
@@ -105,7 +107,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere($this->createQueryBuilder("u")->expr()->like("u.name", "'%$name%'"))
             ->andWhere('u.id != :id')
             ->andWhere('u.profil = :p1')
-            ->setParameters(['id' => $currentId, 'p1' => 'entreprise'])
+            ->setParameters(['id' => $currentId, 'p1' => 'investisseur'])
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult();

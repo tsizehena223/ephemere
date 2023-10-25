@@ -65,6 +65,7 @@ class AdminController extends AbstractController
             $notif->setAuthor("Admin");
             $notif->setContent($notifContent);
             $notif->setArticleTitle($article->getTitle());
+            $notif->setSeen(0);
             $em->persist($notif);
 
             $em->flush();
