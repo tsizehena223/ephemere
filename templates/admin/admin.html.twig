@@ -76,6 +76,32 @@
 				</tbody>
 			</table>		
     </div>
+&nbsp;
+	<div class="list-group">
+		<center class="btn btn-warning">Messages </center>
+			<table class="table">
+				<thead>
+					<tr class="table-primary">
+						<th scope="col">Author</th>
+						<th scope="col">Content</th>
+						<th scope="col">Date</th>
+						<th scope="col">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if messages is defined %}
+						{% for message in messages %}
+							<tr>
+								<th class="table-secondary">{{ message.sender.name }}</th>
+								<td class="table-secondary">{{ message.lastMessage }}</td>
+								<td class="table-secondary">{{ message.createdAt | date('Y-m-d H:i:s') }}</td>
+								<td class="table-secondary"><a href="mailto:{{message.sender.email}}"><i class="btn btn-sm btn-success">Répondre</i></a></td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</table>		
+    </div>
 </div>
 
 </body>

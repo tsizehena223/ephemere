@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Discussion;
+use App\Entity\Message;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
@@ -55,6 +57,27 @@ class RegisterController extends AbstractController
                 $userAuthenticator,
                 $request
             );
+
+            // DEFAULT MESSAGE FOR EACH USER
+            $admin = $userRepository->findOneBy(["profil" => "admin"]);
+            $content = "Bonjour " . $user->getName() . ", l'administrateur vous repondra via email! Merci de nous avoir contacter! Bonne journée";
+            $message = new Message();
+            $message->setSender($admin);
+            $message->setRecipient($user);
+            $message->setContent($content);
+            $message->setCreatedAt(new \DateTime());
+
+            $discussion = new Discussion($admin, $user);
+            $discussion->setUsers([$admin->getId(), $user->getId()]);
+            $discussion->setCreatedAt(new \DateTime());
+            $discussion->setUpdatedAt(new \DateTime());
+
+            $message->setDiscussion($discussion);
+
+            $em->persist($message);
+            $em->persist($discussion);
+
+            $em->flush();
 
             return $this->redirectToRoute("app_add_information");
         }

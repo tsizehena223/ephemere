@@ -71,7 +71,7 @@
                     <a class="menu-item"  id="message-notification">
                         <span><i class="fa-brands fa-1x fa-facebook-messenger"><small class="notification-count"> ! </small></i></span><h3>Message</h3>
                     </a>
-                    <a class="menu-item"> 
+                    <a class="menu-item" href="{{ path("app_message.get", {"id": 1}) }}"> 
                         <span><i class="fa-solid fa-1x fa-contact-book"></i></span><h3>Contact Us</h3>
                     </a>
                     <a class="menu-item" id="notifications">
@@ -97,9 +97,6 @@
                         </div>
                         {# <!----End pop-up notification----> #}
                     </a>
-                    <a class="menu-item">
-                        <span><i class="icon1 fa-solid fa-1x fa-palette"></i></span><h3>Theme</h3>
-                    </a>
                  </div>
                  {# <!----End of side bar----> #}
                  {% if app.user %}
@@ -118,7 +115,13 @@
                         <img src="{{ imageSource }}" alt="">
                     </div>
                     <input type="text" name="" id="create-post" placeholder="What is on your mind?" readonly>
-                    <label class="btn btn-primary" for="create-post">{% include 'article/index.html.twig' %}</label>
+                    <label class="btn btn-primary" for="create-post">
+                        {% if app.user.profil == 'admin' or app.user.profil == 'entreprise' %}
+                            {% include 'publication/index.html.twig' %}
+                        {% else %}
+                            {% include 'article/index.html.twig' %}
+                        {% endif %}
+                    </label>
                 </div>
                 {# <!------Feeds 1-------> #}
                 {% if usersSearch is defined %}
@@ -161,16 +164,6 @@
                             <div class="photo">
                                 <img src="{{ asset('assets/accueil/images/bienvenue.jpg') }}" alt="">
                             </div>
-                            <div class="action-buttons">
-                                <div class="interaction-button">
-                                    <span><i class="fa-regular fa-1x fa-heart"></i></span>
-                                    <span><i class="fa-regular fa-1x fa-comment"></i></span>
-                                    <span><i class="fa-solid fa-1x fa-share-alt"></i></span>
-                                </div>
-                                <div class="bookmark">
-                                    <span><i class="fa-regular fa-1x fa-bookmark"></i></span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     {# <!------Feeds 2-------> #}
@@ -193,18 +186,38 @@
                             <div class="photo">
                                 <video src="{{ asset('assets/accueil/video/infographic.mp4') }}"></video>
                             </div>
-                            <div class="action-buttons">
-                                <div class="interaction-button">
-                                    <span><i class="fa-regular fa-1x fa-heart"></i></span>
-                                    <span><i class="fa-regular fa-1x fa-comment"></i></span>
-                                    <span><i class="fa-solid fa-1x fa-share-alt"></i></span>
-                                </div>
-                                <div class="bookmark">
-                                    <span><i class="fa-regular fa-1x fa-bookmark"></i></span>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+                    {% if pubs is defined %}
+                       {% for pub in pubs %}
+                            <div class="feeds">
+                                <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                {% set imageSource = (pub.author.pdpName) ? asset('images/users/' ~ pub.author.pdpName) : asset('assets/accueil/images/defaultUser.png') %}
+                                                <img src="{{ imageSource }}" alt="">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>{{ pub.author.name }}</h3>
+                                                <small>Sponsored</small>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <span class="edit">
+                                            <i class="fa-solid fa-1x fa-ellipsis"></i>
+                                        </span>
+                                    </div>
+                                    <p style="font-size: 0.8rem; margin-left: 20px"><b>{{ pub.content }}</b></p>
+                                    <div class="photo">
+                                        <img src="{{ asset('images/publications/') ~ pub.imageName }}"></img>
+                                    </div>
+                                </div>
+                            </div>
+                       {% endfor %}
+                    {% endif %}
                 {% endif %}
             </div>
             {# <!-----------End of middle-------------> #}

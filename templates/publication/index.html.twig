@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #showPopup2 {
+            color: white;
+            cursor: pointer;
+        }
+
+        #popup2 {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 1); /* Fond semi-transparent */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            padding: 20px;
+            z-index: 1000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form1 {
+            padding: 20px;
+        }
+
+        .label1 {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .input1 {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .input1:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .button1 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .button1:hover {
+            background-color: #2980b9;
+        }
+
+        #closePopup2 {
+            background-color: #e74c3c;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #closePopup2:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="showPopup2">Post</p>
+
+    <div id="popup2" class="popup">
+        {% if app.user %}
+            <form action="{{ path('app_publication') }}" method="POST" class="form1" enctype="multipart/form-data">
+                <label for="title" class="label1">Contenu :</label>
+                <input type="text" class="input1" id="title" name="content" required placeholder="Contenu ...">
+
+                <label for="image" class="label1">Project file :</label>
+                <input type="file" id="image" class="input1" name="image" required>
+
+                <button type="submit" class="button1">Post</button>
+            </form>
+        {% endif %}
+        <button id="closePopup2">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showPopupButton = document.getElementById('showPopup2');
+            var popup = document.getElementById('popup2');
+            var closePopupButton = document.getElementById('closePopup2');
+
+            showPopupButton.addEventListener('click', function () {
+                popup.style.display = 'block';
+            });
+
+            closePopupButton.addEventListener('click', function () {
+                popup.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Notification;
 use App\Repository\ArticleRepository;
+use App\Repository\DiscussionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin')]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(ArticleRepository $articleRepository, DiscussionRepository $discussionRepository): Response
     {
         if (!$this->isGranted("ROLE_ADMIN")) {
             return $this->redirectToRoute('app_login');
@@ -21,7 +22,9 @@ class AdminController extends AbstractController
 
         $articlesToValid = $articleRepository->projectNotVerified();
         $articlesValided = $articleRepository->projectVerified();
-        return $this->render("admin/admin.html.twig", ["projetsAValider" => $articlesToValid, "projectsValides" => $articlesValided]);
+        $messages = $discussionRepository->findBy(["recipient" => $this->getUser()]);
+
+        return $this->render("admin/admin.html.twig", ["projetsAValider" => $articlesToValid, "projectsValides" => $articlesValided, "messages" => $messages]);
     }
 
     #[Route('/admin/approuv/{id}', name: 'app_admin.approuv')]
@@ -33,7 +36,7 @@ class AdminController extends AbstractController
             $article->setUpdatedAt(new \DateTime());
             $em->persist($article);
 
-            $notifContent = "Félicitation, votre projet a été validé par l'admin!";
+            $notifContent = "Félicitation, votre projet a été validé par l'admin! Veuillez signaler par message l'administrateur";
 
             $notif = new Notification();
             $notif->setRecipient($article->getAuthor());

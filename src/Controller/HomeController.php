@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\ArticleRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\PublicationRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
-    public function index(Request $request, UserRepository $userRepository, NotificationRepository $notificationRepository): Response
+    public function index(Request $request, UserRepository $userRepository, PublicationRepository $publicationRepository, NotificationRepository $notificationRepository): Response
     {
         if ($this->isGranted("ROLE_ADMIN")) {
             return $this->redirectToRoute("app_admin");
@@ -50,10 +51,12 @@ class HomeController extends AbstractController
                 }
 
                 $notifs = $notificationRepository->findNotifsByUser($current);
+                $pubs = $publicationRepository->findAll();
 
                 return $this->render('home/index.html.twig', [
                     'users' => $users,
-                    'notifs' => $notifs
+                    'notifs' => $notifs,
+                    'pubs' => $pubs
                 ]);
             }
         }

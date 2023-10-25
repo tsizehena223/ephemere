@@ -66,12 +66,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Discussion::class, orphanRemoval: true)]
     private Collection $discussions;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Publication::class, orphanRemoval: true)]
+    private Collection $publications;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->publications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -344,6 +348,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($discussion->getSender() === $this) {
                 $discussion->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): static
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications->add($publication);
+            $publication->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): static
+    {
+        if ($this->publications->removeElement($publication)) {
+            // set the owning side to null (unless already changed)
+            if ($publication->getAuthor() === $this) {
+                $publication->setAuthor(null);
             }
         }
 
